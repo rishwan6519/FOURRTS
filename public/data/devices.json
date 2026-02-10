@@ -1,0 +1,61 @@
+[
+  {
+    "id": "DC47701936",
+    "displayName": "RST Sensor 01",
+    "type": "RST",
+    "sensors": [
+      {
+        "field": "field1",
+        "name": "Temperature",
+        "unit": "°C",
+        "min": 20,
+        "max": 25
+      },
+      {
+        "field": "field2",
+        "name": "Humidity",
+        "unit": "%",
+        "min": 30,
+        "max": 45
+      }
+    ],
+    "lastUpdate": "2026-02-04T06:39:27.709Z"
+  },
+  {
+    "id": "DC47701937",
+    "displayName": "RST Sensor 02",
+    "type": "RST",
+    "sensors": [
+      {
+        "field": "field1",
+        "name": "Temperature",
+        "unit": "°C",
+        "min": 18,
+        "max": 22
+      },
+      {
+        "field": "field2",
+        "name": "Humidity",
+        "unit": "%",
+        "min": 40,
+        "max": 50
+      }
+    ],
+    "lastUpdate": "2026-02-04T06:39:27.709Z"
+  },
+  {
+    "id": "DPT8829102",
+    "displayName": "DPT Pressure 01",
+    "type": "DPT",
+    "sensors": [
+      {
+        "field": "field1",
+        "name": "Differential Pressure",
+        "unit": "Pa",
+        "min": -2,
+        "max": 2
+      }
+    ],
+    "lastUpdate": "2026-02-04T06:39:27.709Z"
+  }
+]

@@ -184,7 +184,7 @@ export default function DevicesPage() {
                           textTransform: 'uppercase'
                         }}
                       >
-                        {device.showOnDashboard !== false ? <><Eye size={12} /> Live</> : <><EyeOff size={12} /> Hidden</>}
+                        {device.showOnDashboard !== false ? <><Eye size={12} /> Show</> : <><EyeOff size={12} /> Hidden</>}
                       </button>
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'right' }}>

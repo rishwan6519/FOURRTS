@@ -20,14 +20,15 @@ interface SensorChartProps {
   height?: number | string;
 }
 
-const SensorChart: React.FC<SensorChartProps> = ({ data, sensor, color = '#005a9c', height = 350 }) => {
+const SensorChart: React.FC<SensorChartProps> = ({ data, sensor, color = '#005a9c', height = '100%' }) => {
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+
   return (
-    <div style={{ width: '100%', height: height, marginTop: '20px' }}>
+    <div style={{ width: '100%', height: height }}>
       <h4 style={{ marginBottom: '1rem', color: 'var(--text-main)', fontSize: '1rem' }}>
         {sensor.name} Trend ({sensor.unit})
       </h4>
@@ -47,6 +48,10 @@ const SensorChart: React.FC<SensorChartProps> = ({ data, sensor, color = '#005a9
               tick={{ fontSize: 12, fill: '#64748b' }}
               axisLine={false}
               tickLine={false}
+              domain={([dataMin, dataMax]) => [
+                Math.min(0, dataMin, sensor.min ?? 0),
+                Math.max(dataMax, sensor.max ?? dataMax)
+              ]}
             />
             <Tooltip 
               labelFormatter={(label) => new Date(label).toLocaleString()}

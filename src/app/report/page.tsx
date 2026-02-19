@@ -36,7 +36,7 @@ function ReportContent() {
       try {
         const [deviceRes, historyRes] = await Promise.all([
           fetch(`/api/devices/${deviceId}`),
-          fetch(`/api/devices/${deviceId}/history`)
+          fetch(`/api/devices/${deviceId}/history?range=all`)
         ]);
 
         if (deviceRes.ok) {

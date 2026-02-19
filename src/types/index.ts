@@ -14,8 +14,10 @@ export interface Device {
   type: DeviceType;
   sensors: SensorField[];
   lastUpdate: string;
+  lastSeen?: string;
   owner?: string; // User ID
   resetStatus?: number; // 0 = normal, 1 = reset pending
+  showOnDashboard?: boolean;
 }
 
 export interface User {

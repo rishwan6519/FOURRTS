@@ -35,11 +35,9 @@ const DeviceSchema = new mongoose.Schema({
   },
   lastUpdate: {
     type: Date,
-    default: Date.now,
   },
   lastSeen: {
     type: Date,
-    default: Date.now,
   },
   showOnDashboard: {
     type: Boolean,

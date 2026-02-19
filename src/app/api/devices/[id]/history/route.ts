@@ -8,11 +8,23 @@ export async function GET(
 ) {
   await dbConnect();
   const { id } = await params;
+  const { searchParams } = new URL(req.url);
+  const range = searchParams.get('range'); // '24h' (default) or 'all' (for reports)
+
   try {
-    // Fetch last 100 entries for the device
-    const history = await History.find({ deviceId: id })
+    let query: any = { deviceId: id };
+    
+    // Default to 24 hours unless 'all' is specified (used for reports)
+    if (range !== 'all') {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      query.timestamp = { $gte: twentyFourHoursAgo };
+    }
+    
+    // Fetch entries based on the query, sorted descending
+    // We limit to 2000 for safety, which is plenty for 24h at high frequency
+    const history = await History.find(query)
       .sort({ timestamp: -1 })
-      .limit(100);
+      .limit(range === 'all' ? 5000 : 1440); 
       
     // Format for frontend (reversing back to chronological for charts)
     const formattedHistory = history.map(h => ({

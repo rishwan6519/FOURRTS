@@ -5,9 +5,18 @@ interface StatusIndicatorProps {
   lastSeen?: string;
 }
 
-export default function StatusIndicator({ lastUpdate, lastSeen }: StatusIndicatorProps): React.ReactElement {
-  // Use lastSeen for actual connection status, fallback to lastUpdate for older records
-  const checkTime = lastSeen ? new Date(lastSeen).getTime() : new Date(lastUpdate).getTime();
+export default function StatusIndicator({ lastUpdate }: StatusIndicatorProps): React.ReactElement {
+  // Only use the data timestamp (lastUpdate) to determine if the device is active
+  if (!lastUpdate) {
+    return (
+      <div className="status-badge" style={{ padding: '0.25rem 0.6rem', fontSize: '0.6rem', background: '#f1f5f9', color: '#64748b' }}>
+        <span className="dot" style={{ width: '6px', height: '6px', background: '#94a3b8' }} />
+        NEVER SYNCED
+      </div>
+    );
+  }
+
+  const checkTime = new Date(lastUpdate).getTime();
   const now = new Date().getTime();
   const diffMinutes = (now - checkTime) / (1000 * 60);
   const online = diffMinutes <= 15;
@@ -18,5 +27,4 @@ export default function StatusIndicator({ lastUpdate, lastSeen }: StatusIndicato
       {online ? 'Online' : 'Offline'}
     </div>
   );
-
 }

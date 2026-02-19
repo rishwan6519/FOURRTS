@@ -33,7 +33,6 @@ export async function POST(req: Request) {
         type,
         sensors,
         owner: userId,
-        lastUpdate: new Date()
       });
       devices.push(device);
     }

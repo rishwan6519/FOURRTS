@@ -153,33 +153,41 @@ export default function DeviceDetailPage() {
         </button>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Clock size={13} /> Synced: {new Date(device.lastUpdate).toLocaleTimeString()}</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Calendar size={13} /> {new Date((device as any).createdAt).toLocaleDateString()}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <Clock size={13} /> Last Received Data: {device.lastUpdate ? new Date(device.lastUpdate).toLocaleString([], { dateStyle: 'medium', timeStyle: 'medium' }) : 'Await Connectivity...'}
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <Calendar size={13} /> Created: {(device as any).createdAt ? new Date((device as any).createdAt).toLocaleDateString() : 'Initialising...'}
+          </span>
         </div>
       </div>
 
-      <header className="formal-card" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+      <header className="formal-card" style={{ padding: '1.5rem 2rem', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           <div style={{ 
             background: 'var(--accent-light)', 
             color: 'var(--accent)', 
-            padding: '0.75rem', 
-            borderRadius: '12px',
+            padding: '1rem', 
+            borderRadius: '16px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center' 
+            justifyContent: 'center',
+            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
           }}>
-             <Smartphone size={24} />
+             <Smartphone size={28} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-               <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', lineHeight: 1.1 }}>{device.displayName}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.4rem' }}>
+               <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', lineHeight: 1.1, margin: 0 }}>{device.displayName}</h1>
                <StatusIndicator lastUpdate={device.lastUpdate} lastSeen={(device as any).lastSeen} />
                {device.resetStatus === 1 && (
-                 <span className="badge" style={{ background: '#fef3c7', color: '#92400e', fontSize: '0.65rem', padding: '0.2rem 0.5rem' }}>RESETTING</span>
+                 <span className="badge" style={{ background: '#fef3c7', color: '#92400e', fontSize: '0.7rem', padding: '0.25rem 0.6rem', fontWeight: 700 }}>RESET PENDING</span>
                )}
             </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>ID: {device.id}</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '0.05em' }}>DEVICE ID:</span>
+              <code style={{ fontSize: '0.85rem', color: 'var(--accent)', fontWeight: 800, background: 'var(--accent-light)', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>{device.id}</code>
+            </div>
           </div>
         </div>
         
@@ -190,9 +198,9 @@ export default function DeviceDetailPage() {
                display: 'flex', 
                alignItems: 'center', 
                gap: '0.5rem', 
-               background: 'transparent', 
-               color: '#ef4444', 
-               border: '1px solid #ef4444',
+               background: '#fff1f2', 
+               color: '#e11d48', 
+               border: '1px solid #fda4af',
                padding: '0.5rem 1rem',
                fontSize: '0.85rem',
                fontWeight: 700,

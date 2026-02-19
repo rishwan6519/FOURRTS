@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { User, Device } from '@/types';
-import { UserPlus, Cpu, Trash2, Users, ChevronRight, CheckCircle, Search, Shield, LogOut } from 'lucide-react';
+import { UserPlus, Cpu, Trash2, Users, ChevronRight, CheckCircle, Search, Shield, LogOut, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -97,6 +97,23 @@ export default function AdminPage() {
     }
     setLoading(false);
     setTimeout(() => setMessage(''), 3000);
+  };
+
+  const handleToggleVisibility = async (deviceId: string, currentStatus: boolean) => {
+    try {
+      const res = await fetch(`/api/devices/${deviceId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ showOnDashboard: !currentStatus })
+      });
+      if (res.ok) {
+        if (selectedUser) fetchUserDevices(selectedUser._id);
+        setMessage(`Device visibility updated to ${!currentStatus ? 'Visible' : 'Hidden'}`);
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (err) {
+      console.error('Failed to toggle visibility:', err);
+    }
   };
 
   return (
@@ -330,26 +347,57 @@ export default function AdminPage() {
                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {device.deviceId}</span>
                              </div>
                              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                               <span style={{ 
-                                 fontSize: '0.7rem', 
-                                 padding: '0.2rem 0.5rem', 
-                                 background: device.type === 'RST' ? '#dbeafe' : '#fce7f3',
-                                 color: device.type === 'RST' ? '#1e40af' : '#9d174d',
-                                 borderRadius: '4px',
-                                 fontWeight: 700
-                               }}>
-                                 {device.type}
-                               </span>
-                               <button 
-                                 onClick={() => handleDeleteDevice(device.deviceId)}
-                                 className="icon-btn"
-                                 style={{ color: '#ef4444', padding: '0.4rem', border: '1px solid transparent' }}
-                                 title="Delete Device"
-                                 onMouseOver={(e) => { e.currentTarget.style.background = '#fee2e2'; e.currentTarget.style.borderColor = '#fecaca'; }}
-                                 onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent'; }}
-                               >
-                                 <Trash2 size={16} />
-                               </button>
+                               <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+                                   {(() => {
+                                      const isOnline = device.lastUpdate && (new Date().getTime() - new Date(device.lastUpdate).getTime()) / (1000 * 60) <= 15;
+                                      return (
+                                        <span style={{ 
+                                          fontSize: '0.6rem', 
+                                          fontWeight: 800, 
+                                          color: isOnline ? 'var(--success)' : '#94a3b8',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          marginBottom: '4px'
+                                        }}>
+                                          <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: isOnline ? 'var(--success)' : '#94a3b8' }} />
+                                          {isOnline ? 'ONLINE' : 'OFFLINE'}
+                                        </span>
+                                      );
+                                   })()}
+                                   <span style={{ 
+                                     fontSize: '0.7rem', 
+                                     padding: '0.2rem 0.5rem', 
+                                     background: device.type === 'RST' ? '#dbeafe' : '#fce7f3',
+                                     color: device.type === 'RST' ? '#1e40af' : '#9d174d',
+                                     borderRadius: '4px',
+                                     fontWeight: 700
+                                   }}>
+                                     {device.type}
+                                   </span>
+                               </div>
+                               
+                               <div style={{ display: 'flex', gap: '0.25rem' }}>
+                                 <button 
+                                   onClick={() => handleToggleVisibility(device.deviceId, device.showOnDashboard ?? true)}
+                                   className="icon-btn"
+                                   style={{ color: device.showOnDashboard === false ? '#94a3b8' : 'var(--primary)', padding: '0.4rem', border: '1px solid var(--border-color)' }}
+                                   title={device.showOnDashboard === false ? 'Show on Dashboard' : 'Hide from Dashboard'}
+                                 >
+                                   {device.showOnDashboard === false ? <EyeOff size={16} /> : <Eye size={16} />}
+                                 </button>
+                                 
+                                 <button 
+                                   onClick={() => handleDeleteDevice(device.deviceId)}
+                                   className="icon-btn"
+                                   style={{ color: '#ef4444', padding: '0.4rem', border: '1px solid var(--border-color)' }}
+                                   title="Delete Device"
+                                   onMouseOver={(e) => { e.currentTarget.style.background = '#fee2e2'; }}
+                                   onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                                 >
+                                   <Trash2 size={16} />
+                                 </button>
+                               </div>
                              </div>
                            </div>
                         ))}

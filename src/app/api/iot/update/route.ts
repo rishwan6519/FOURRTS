@@ -12,7 +12,12 @@ export async function GET(req: Request) {
   let timestampDate = new Date();
   const queryTimestamp = searchParams.get('timestamp');
   if (queryTimestamp) {
-    const parsed = new Date(queryTimestamp);
+    // If hardware sends a local string without TZ, assume IST (+05:30)
+    const tzFix = (queryTimestamp.includes('T') || queryTimestamp.includes('Z') || queryTimestamp.includes('+')) 
+      ? queryTimestamp 
+      : `${queryTimestamp} +05:30`;
+    
+    const parsed = new Date(tzFix);
     if (!isNaN(parsed.getTime())) {
       timestampDate = parsed;
     }

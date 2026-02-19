@@ -23,7 +23,7 @@ interface SensorChartProps {
 const SensorChart: React.FC<SensorChartProps> = ({ data, sensor, color = '#005a9c', height = '100%' }) => {
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
   };
 
 
@@ -54,7 +54,7 @@ const SensorChart: React.FC<SensorChartProps> = ({ data, sensor, color = '#005a9
               ]}
             />
             <Tooltip 
-              labelFormatter={(label) => new Date(label).toLocaleString()}
+              labelFormatter={(label) => new Date(label).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
               contentStyle={{ 
                 borderRadius: '8px', 
                 border: 'none', 

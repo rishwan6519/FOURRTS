@@ -154,10 +154,10 @@ export default function DeviceDetailPage() {
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Clock size={13} /> Last Received Data: {device.lastUpdate ? new Date(device.lastUpdate).toLocaleString([], { dateStyle: 'medium', timeStyle: 'medium' }) : 'Await Connectivity...'}
+            <Clock size={13} /> Last Received Data: {device.lastUpdate ? new Date(device.lastUpdate).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'medium' }) : 'Await Connectivity...'}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Calendar size={13} /> Created: {(device as any).createdAt ? new Date((device as any).createdAt).toLocaleDateString() : 'Initialising...'}
+            <Calendar size={13} /> Created: {(device as any).createdAt ? new Date((device as any).createdAt).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium' }) : 'Initialising...'}
           </span>
         </div>
       </div>

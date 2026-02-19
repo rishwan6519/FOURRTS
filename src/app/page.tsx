@@ -88,7 +88,7 @@ export default function Home() {
 
       {/* Print Only Metadata */}
       <div className="print-only" style={{ display: 'none', borderTop: '1px solid #eee', marginTop: '2rem', paddingTop: '1rem', fontSize: '0.7rem', color: '#666' }}>
-        Report Generated: {new Date().toLocaleString()} | FOURRTS Dashboard Platform
+        Report Generated: {new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} | FOURRTS Dashboard Platform
       </div>
 
       <style jsx>{`

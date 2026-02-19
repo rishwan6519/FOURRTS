@@ -36,7 +36,7 @@ export async function GET(req: Request) {
     });
     
     // Log for debug (hardware integration verification)
-    console.log(`Payload from ${deviceId}:`, data);
+    console.log(`Payload from ${deviceId}:`, data,queryTimestamp,"new time stamp",timestampDate);
 
     // Record raw measurement in History Audit Log
     await History.create({
@@ -59,7 +59,7 @@ export async function GET(req: Request) {
     );
 
     // Return the EXACT status response requested by hardware protocol
-    return NextResponse.json({ "status": "true" });
+    return NextResponse.json({ "status": true });
   } catch (err) {
     console.error('Handshake Error:', err);
     return NextResponse.json({ "status": "false", "error": "Internal Error" }, { status: 500 });

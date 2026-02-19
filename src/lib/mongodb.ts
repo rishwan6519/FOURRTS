@@ -1,23 +1,65 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-console.log("MONGODB_URI:", process.env.MONGODB_URI?.slice(0, 20));
+// const MONGODB_URI = process.env.MONGODB_URI;
+// console.log("MONGODB_URI:", process.env.MONGODB_URI?.slice(0, 20));
 
 
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
-}
-const uri = MONGODB_URI!;
+// if (!MONGODB_URI) {
+//   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+// }
+// const uri = MONGODB_URI!;
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections from growing exponentially
- * during API Route usage.
- */
+// /**
+//  * Global is used here to maintain a cached connection across hot reloads
+//  * in development. This prevents connections from growing exponentially
+//  * during API Route usage.
+//  */
+// let cached = (global as any).mongoose;
+
+// if (!cached) {
+//   cached = (global as any).mongoose = { conn: null, promise: null };
+// }
+
+// async function dbConnect() {
+//   if (cached.conn) {
+//     return cached.conn;
+//   }
+
+//   if (!cached.promise) {
+//     const opts = {
+//       bufferCommands: false,
+//       family: 4, // Force IPv4 to resolve DNS issues
+//     };
+
+//     cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
+//       return mongoose;
+//     });
+//   }
+
+//   try {
+//     cached.conn = await cached.promise;
+//   } catch (e) {
+//     cached.promise = null;
+//     throw e;
+//   }
+
+//   return cached.conn;
+// }
+
+// export default dbConnect;
+
+
+
+
+import mongoose from "mongoose";
+
 let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = {
+    conn: null,
+    promise: null,
+  };
 }
 
 async function dbConnect() {
@@ -25,15 +67,21 @@ async function dbConnect() {
     return cached.conn;
   }
 
+  const MONGODB_URI = process.env.MONGODB_URI;
+
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable");
+  }
+
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      family: 4, // Force IPv4 to resolve DNS issues
+      family: 4, // Force IPv4 to avoid DNS issues in Docker
     };
 
-    cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((mongoose) => mongoose);
   }
 
   try {
@@ -47,3 +95,4 @@ async function dbConnect() {
 }
 
 export default dbConnect;
+

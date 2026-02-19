@@ -6,6 +6,7 @@ import { Device, HistoryEntry } from '@/types';
 import SensorChart from '@/components/SensorChart';
 import StatusIndicator from '@/components/StatusIndicator';
 import ConfirmModal from '@/components/ConfirmModal';
+import AlertSystem from '@/components/AlertSystem';
 import { ArrowLeft, Clock, Calendar, Copy, CheckCircle, Smartphone, Activity, Download, RefreshCcw, Check } from 'lucide-react';
 
 export default function DeviceDetailPage() {
@@ -93,7 +94,7 @@ export default function DeviceDetailPage() {
 
   return (
     <main className="container" style={{ position: 'relative', maxWidth: '1200px' }}>
-      
+      <AlertSystem devices={[device]} />
       {/* Custom Toast Notification */}
       {toastMessage && (
         <div style={{

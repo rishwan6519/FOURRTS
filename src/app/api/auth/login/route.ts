@@ -29,8 +29,8 @@ export async function POST(req: Request) {
     // Set cookies for session management
     const cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict' as const,
+      secure: false,           // 👈 KEY FIX
+      sameSite: 'lax' as const,
         maxAge: 60 * 60 * 24 * 7 // 1 week
     };
 

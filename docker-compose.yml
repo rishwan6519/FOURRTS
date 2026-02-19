@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  nextjs:
+    container_name: nextjs_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      TZ: Asia/Kolkata
+      MONGODB_URI: mongodb://mongodb:27017/pharmasense
+      NODE_ENV: production
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
